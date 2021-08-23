@@ -52,7 +52,7 @@ public class JwtTokenProvider {
   public String createToken(String username, String role) {
     Claims claims = Jwts.claims().setSubject(username);
     claims.put("role",role);
-    log.info("1");
+
     return "Bearer " + Jwts.builder()
         .setClaims(claims)
         .setIssuedAt(new Date())

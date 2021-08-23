@@ -1,0 +1,117 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand mb-1" href="/">Internet Shop</a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="/category">Category</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/products">All products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/find-order">Find order</a>
+      </li>
+    </ul>
+
+    <div class="dropdown mx-2">
+      <button class="btn btn-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="bi bi-search"></i>
+      </button>
+
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+        <form #form="ngForm" (ngSubmit)="onSearch(form)" class="form-inline px-2 py-1">
+          <div class="d-flex flex-row bd-highlight ">
+            <input ngModel name="search" class="form-control mr-sm-2 p-3" type="search" placeholder="Search" style="display: inline">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <a (click)="onBasketClick()" class="btn btn-secondary mr-2" data-toggle="modal" data-target="#basketModal"><i class="bi bi-cart"></i></a>
+
+
+    <div *ngIf="!isLoggedIn" class="text-end">
+      <button type="button" class="btn btn-outline-light me-2" data-toggle="modal" data-target="#modalCenter">Login</button>
+      <a class="btn btn-warning" href="/register">Sign-up</a>
+    </div>
+
+    <div *ngIf="isLoggedIn" class="text-end">
+      <div class="dropdown mr-2">
+        <button class="btn btn-light" type="button" id="dropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{username}}
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <a (click)="initOrders()" class="btn dropdown-item" data-toggle="modal" data-target="#ordersModal">My orders</a>
+          <a class="btn dropdown-item">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="/" class="btn dropdown-item" (click)="logOut()">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+<app-login></app-login>
+
+<!--basket-->
+<div  class="modal fade" id="basketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Basket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body h-25 overflow-auto text-center">
+        <strong *ngIf="!(products?.length > 0)">Empty</strong>
+        <div class="list-group list-group-flush scroll-area">
+          <a *ngFor="let product of products" (click)="redirectToProduct(product)" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+              <strong class="mb-1">{{product?.name}}</strong>
+              <div>
+                <strong>{{product?.price}}$</strong>
+                <a class="btn" (click)="removeProductFromBasket(product)"><i  class="bi bi-dash-square ml-2"></i></a>
+
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div *ngIf="products?.length > 0" class="modal-footer">
+        <button (click)="onClearButton()" type="button" class="btn btn-secondary" data-dismiss="modal">Clear</button>
+        <button (click)="onBuyClick()" type="button" class="btn btn-primary" data-dismiss="modal">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--orders-->
+<div  class="modal fade" id="ordersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderModalLabel">Your orders</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body h-25 overflow-auto text-center">
+        <strong *ngIf="!(orders?.length > 0)">Empty</strong>
+        <div class="list-group list-group-flush scroll-area">
+          <a *ngFor="let order of orders" (click)="redirectToOrder(order)" class="list-group-item list-group-item-action py-3 lh-tight" aria-current="true" data-dismiss="modal">
+            Id: {{order.id}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

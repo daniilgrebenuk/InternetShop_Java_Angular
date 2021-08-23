@@ -1,0 +1,69 @@
+<div class="row mt-3">
+  <div *ngFor="let product of products" class="col-md-6 col-xl-3 ">
+    <div class="card m-b-30 text-center">
+      <img (click)="openProduct(product)" src="{{product.imageUrl}}" alt="" class="card-image-top py-4 my-4 mx-3 border-bottom h-50">
+
+      <h5>{{product.name}}</h5>
+      <h6 class="mb-4">Price: {{product.price}}$</h6>
+
+      <div class="card-body">
+        <div class="float-right btn-group btn-group-sm">
+          <a (click)="addProductToBasket(product)" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="addToBasket"><i class="bi bi-cart-plus"></i> </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="role=='ADMIN'" class="col-md-6 col-xl-3 mt-5">
+    <div class="card m-b-30 text-center mt-4" >
+      <a class="py-4" data-toggle="modal" data-target="#addNewProduct"><img src="https://smeh.club/wp-content/uploads/2019/11/plyus_5_08125928.png" alt="" width="200"></a>
+    </div>
+  </div>
+</div>
+
+<!--Add new product modal-->
+<div class="modal fade" id="addNewProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #newForm="ngForm" (ngSubmit) = addNewProduct(newForm)>
+          <div class="form-group">
+            <label for="categoryId">Category id</label>
+            <input type="text" ngModel="{{id}}" name="categoryId" class="form-control" id="categoryId" placeholder="Category id" required>
+          </div>
+          <div class="form-group">
+            <label for="name">Product's name</label>
+            <input type="email" ngModel name="name" class="form-control" id="name" placeholder="Product's name" required>
+          </div>
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" ngModel name="price" class="form-control" id="price" placeholder="Price" required>
+          </div>
+          <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+          </div>
+          <div class="form-group">
+            <label for="isAvailable">Is Available</label>
+            <input type="checkbox" ngModel="{{true}}" name="isAvailable" class="ml-2" id="isAvailable" placeholder="Image URL" required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+

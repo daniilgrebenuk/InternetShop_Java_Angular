@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-internetshoporaclesql/src/test/resources/application.properties
+internetshoporaclesql/src/main/resources/application.properties

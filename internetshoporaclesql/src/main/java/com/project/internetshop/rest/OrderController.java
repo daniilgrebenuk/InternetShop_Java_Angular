@@ -28,10 +28,7 @@ public class OrderController {
 
   @GetMapping("/newOrder")
   public ResponseEntity<Order> getNewOrder(@AuthenticationPrincipal User user){
-    if (user != null){
-      return ResponseEntity.ok(new Order(user));
-    }
-    return ResponseEntity.ok(new Order());
+    return ResponseEntity.ok(user != null ? new Order(user): new Order());
   }
 
 
